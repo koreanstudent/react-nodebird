@@ -3,6 +3,7 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import AppLayout from '../components/AppLayout';
 
+// 레이아웃
 
 const NodeBird = ({ Component }) => {
     return (
