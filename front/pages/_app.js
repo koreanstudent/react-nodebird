@@ -1,6 +1,7 @@
 import React from 'react';
-import AppLayout from '../components/AppLayout';
 import Head from 'next/head';
+import PropTypes from 'prop-types';
+import AppLayout from '../components/AppLayout';
 
 
 const NodeBird = ({ Component }) => {
@@ -15,6 +16,11 @@ const NodeBird = ({ Component }) => {
             </AppLayout>
         </>
     )
+};
+
+// node -> renderd : numbers, string, elements or an array .. 
+NodeBird.propTypes = {
+    Component: PropTypes.elementType,
 };
 
 export default NodeBird;
