@@ -1,7 +1,8 @@
 import React from 'react';
-import { Menu,Input, Row, Col, Card, Avatar } from 'antd';
+import { Menu,Input, Row, Col } from 'antd';
 import Link from 'next/Link';
 import LoginForm from './LoginForm';
+import UserProfile from '../components/UserProfile';
 
 // xs : 모바일 , sm : 작은 화면, md : 중간 화면, lg : 큰 화면
 
@@ -27,23 +28,15 @@ const AppLayout = ({children}) => {
             </Menu>
             <Row gutter={10}>
                 <Col xs={24} md={6} >
-                    {dummy.isLoggedIn ?<Card
-                      actions= {[
-                          <div key="twit">트위터 <br/>{dummy.Post.length}</div>,
-                          <div key="following">팔로잉 <br/>{dummy.Followings.length}</div>,
-                          <div key="follower">팔로워 <br/>{dummy.Followers.length}</div>,
-                      ]}>
-                        <Card.Meta
-                            avatar= {<Avatar>{dummy.nickname[0]}</Avatar>}
-                            title= {dummy.nickname}
-                        />
-                    </Card>
+                    {dummy.isLoggedIn ? <UserProfile/>
                     :
                     <LoginForm/>
                     }
                 </Col>
                 <Col xs={24} md={12}>{children}</Col>
-                <Col xs={24} md={6}></Col>
+                <Col xs={24} md={6}>
+                    <Link href ="https://github.com/koreanstudent"><a target="_blank">Made by chang</a></Link>
+                </Col>
             </Row>
             
         </div>
