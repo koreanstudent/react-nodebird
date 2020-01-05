@@ -1,6 +1,13 @@
 import { Card, Avatar } from "antd";
 import React from 'react';
 
+const dummy = {
+    nickname: '이창현',
+    Post: [],
+    Followers: [],
+    Followings: [],
+    isLoggedIn: false,
+};
 const UserProfile = () => {
     return (
         <Card

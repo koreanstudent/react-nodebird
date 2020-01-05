@@ -16,6 +16,10 @@ npm i antd  - 디자인 사용
 
 npm i prop-types
 
+npm i redeux react-redux - react-redux를 설치하는 이유는 redux는 별개 이기때문에 react에 사용하기 위함 이다.
+
+npm i next-redux-wrapper -
+
 ## 용어 정리
 
 - useCallback : 랜더링을 최적화 하기 위해 사용한다.
@@ -23,6 +27,11 @@ npm i prop-types
                 두 번째 파 라미터로 받은 배열의 원소 값 중 하나가 변경되어야만 함수의 reference가 변경된다.
 
 - prop-types : 부모로부터 받은 데이터를 제대로 받았는지 검증 할 수 있다.
+
+- Redux (state) -> 안정성, state 통제 용이
+    - Action -> state를 바꾸는 행동
+    - Dispatch -> Action을 실행
+    - Reducer -> Action의 결과로 state를 어떻게 바꿀지 정의
 
 
 ## 페이지 정리
