@@ -20,7 +20,11 @@ npm i redeux react-redux - react-redux를 설치하는 이유는 redux는 별개
 
 npm i next-redux-wrapper - withRedux 확장성 및 props로 store 컴포넌트를 가져온다
 
-npm i redux-saga -
+npm i redux-saga - 리덕스의 비동기 요청을 사가에서 요청 ex) 서버요청
+
+npm i -D eslint-config-airbnb , npm install eslint-plugin-jsx-a11y --save-dev (웹접근성) -코드를 d엄격하게 스타일링 airbnb직원이 아니기 때문에 적절히 rules 추가 
+
+npm i -D babel-eslint -바벨 최신 문법 사용  "parser": "babel-eslint", "es6": true
 
 ## 용어 정리
 

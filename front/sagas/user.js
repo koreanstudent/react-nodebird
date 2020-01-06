@@ -1,15 +1,18 @@
-import { all, fork, takeLatest, takeEvery, call, put, take } from 'redux-saga/effects';
-import { LOG_IN, LOG_IN_SUCCESS, LOG_IN_FAILURE } from '../reducers/user';
+import { all, fork, takeLatest, takeEvery, call, put, take, delay } from 'redux-saga/effects';
+import { LOG_IN, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_IN_REQUEST } from '../reducers/user';
 
 // all -> 여러 이펙트를 동시에 실행할 수 있게 합니다.
 // call -> 함수 동기적 호출
+// ex) 서버에 요청을하면 응답이 될때까지 기다렸다가 다음으로 넘어감, 서버요청할때 많이 사용?
 // fork -> 함수 비동기적 호출
+// ex) 서버에 요청하면 응답이오던 말든 다음으로 넘어감.
 // put ->  Action dispatch 동일
 // take => 해당 액션이 dispatch되면 제너레이터를 next하는 이펙트
 // takeLatest -> 이전 요청이 끝나지 않은게 있다면 이전 요청을 취소 액션을 여러번 요청하는 경우 마지막 액션을 실행
 //  ex) 로그인 버튼 여러번 했을 경우 로그인 요청이 여러개 나타나는 것을 막을 수 있다.
 // takeEvery -> while(true)
 //  ex) 여러번 클릭이 유효한 거면 사용, 숫자 카운트 등등
+// delay -> delay(1000)
 
 // function* watchHello() {
 //     yield takeEvery(HELLO_SAGA, function*(){
@@ -27,24 +30,7 @@ import { LOG_IN, LOG_IN_SUCCESS, LOG_IN_FAILURE } from '../reducers/user';
 // }
 
 
-function loginAPI() {
- // 서버에 요청을 보내는 부분
-}
 
-
-function* login() {
-    try{
-        yield call(loginAPI);
-        yield put ({ 
-            type: LOG_IN_SUCCESS,
-        })
-    } catch (e) { // loginAPI 실패
-        console.error(e);
-        yield put ({
-            type: LOG_IN_FAILURE,
-        })
-    }
-}
 
 // function* watchHello() {
 //     console.log('before saga');
@@ -58,16 +44,28 @@ function* login() {
 //     // 비동기 요청, 타이머 넣어도 되고
 // }
 
+function loginAPI() {
+    // 서버에 요청을 보내는 부분
+   }
+   
+   
+   function* login() {
+       try{
+           yield call(loginAPI);
+           yield put ({ 
+               type: LOG_IN_SUCCESS,
+           })
+       } catch (e) { // loginAPI 실패
+           console.error(e);
+           yield put ({
+               type: LOG_IN_FAILURE,
+           })
+       }
+   }
+
 // while문이 없으면 함수가 끝나버린다.
 function* watchLogin() {
-    console.log("saga");
-    while(true){
-        console.log("saga2");
-        yield take(LOG_IN);
-        yield put ({
-            type: LOG_IN_SUCCESS,
-        });
-    }
+    yield takeEvery(LOG_IN_REQUEST,login);
 }
 
 function* watchSignUp(){
@@ -76,8 +74,8 @@ function* watchSignUp(){
 
 export default function* userSaga() {
     yield all([
-        watchLogin(),
-        watchSignUp(),
+        fork(watchLogin),
+        fork(watchSignUp),
     ]);
 
 }

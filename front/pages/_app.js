@@ -31,8 +31,8 @@ const NodeBird = ({ Component, store }) => {
 
 // node -> renderd : numbers, string, elements or an array .. 
 NodeBird.propTypes = {
-    Component: PropTypes.elementType,
-    store: PropTypes.object,
+    Component: PropTypes.elementType.isRequired,
+    store: PropTypes.object.isRequired,
 };
 
 // 미들웨어는 액션과 스토어 사이에서 동작합니다.

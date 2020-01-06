@@ -2460,8 +2460,8 @@ const NodeBird = ({
 
 
 NodeBird.propTypes = {
-  Component: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.elementType,
-  store: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object
+  Component: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.elementType.isRequired,
+  store: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object.isRequired
 }; // 미들웨어는 액션과 스토어 사이에서 동작합니다.
 // compose -> 미들웨어 여러개 합성하는것
 // applyMiddleware -> 미들웨어 적용해주는것
@@ -2871,18 +2871,21 @@ const reducer = (state = initialState, action) => {
 /*!**************************!*\
   !*** ./reducers/user.js ***!
   \**************************/
-/*! exports provided: intialState, LOG_IN, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT, SIGN_UP, SIGN_UP_SUCCESS, loginAction, logoutAction, signUpAction, default */
+/*! exports provided: intialState, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, loginAction, logoutAction, signUpAction, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "intialState", function() { return intialState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_IN", function() { return LOG_IN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_IN_REQUEST", function() { return LOG_IN_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_IN_SUCCESS", function() { return LOG_IN_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_IN_FAILURE", function() { return LOG_IN_FAILURE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_OUT", function() { return LOG_OUT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP", function() { return SIGN_UP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_OUT_REQUEST", function() { return LOG_OUT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_OUT_SUCCESS", function() { return LOG_OUT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_OUT_FAILURE", function() { return LOG_OUT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_REQUEST", function() { return SIGN_UP_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_SUCCESS", function() { return SIGN_UP_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_FAILURE", function() { return SIGN_UP_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginAction", function() { return loginAction; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logoutAction", function() { return logoutAction; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "signUpAction", function() { return signUpAction; });
@@ -2923,42 +2926,54 @@ const intialState = {
   isLoggedIn: false,
   user: null
 };
-const LOG_IN = 'LOG_IN'; // 액션의 이름
+const LOG_IN_REQUEST = 'LOG_IN_REQUEST'; // 액션의 이름
 
 const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
-const LOG_OUT = 'LOG_OUT';
-const SIGN_UP = 'SIGN_UP';
+const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST';
+const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
+const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
+const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
+const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 const loginAction = {
-  type: LOG_IN,
+  type: LOG_IN_REQUEST,
   data: {
     nickname: '이창현'
   }
 };
 const logoutAction = {
-  type: LOG_OUT
+  type: LOG_OUT_REQUEST
 }; // Action에 넣을 데이터가 동적인 경우에는 action을 함수로 만든다.
 
 const signUpAction = data => {
   return {
-    type: SIGN_UP,
+    type: SIGN_UP_REQUEST,
     data
   };
 };
 
 const reducer = (state = intialState, action) => {
   switch (action.type) {
-    case LOG_IN:
+    case LOG_IN_REQUEST:
       {
         //로그인 성공시
         return _objectSpread({}, state, {
-          isLoggedIn: true,
-          user: dummyUser
+          loginData: action.data,
+          isLoading: true
         });
       }
 
-    case LOG_OUT:
+    case LOG_IN_SUCCESS:
+      {
+        return _objectSpread({}, state, {
+          isLoggedIn: true,
+          user: dummyUser,
+          isLoading: false
+        });
+      }
+
+    case LOG_OUT_REQUEST:
       {
         return _objectSpread({}, state, {
           isLoggedIn: false,
@@ -2966,7 +2981,7 @@ const reducer = (state = intialState, action) => {
         });
       }
 
-    case SIGN_UP:
+    case SIGN_UP_REQUEST:
       {
         return _objectSpread({}, state, {
           signData: action.data
@@ -3042,13 +3057,16 @@ __webpack_require__.r(__webpack_exports__);
 
  // all -> 여러 이펙트를 동시에 실행할 수 있게 합니다.
 // call -> 함수 동기적 호출
+// ex) 서버에 요청을하면 응답이 될때까지 기다렸다가 다음으로 넘어감, 서버요청할때 많이 사용?
 // fork -> 함수 비동기적 호출
+// ex) 서버에 요청하면 응답이오던 말든 다음으로 넘어감.
 // put ->  Action dispatch 동일
 // take => 해당 액션이 dispatch되면 제너레이터를 next하는 이펙트
 // takeLatest -> 이전 요청이 끝나지 않은게 있다면 이전 요청을 취소 액션을 여러번 요청하는 경우 마지막 액션을 실행
 //  ex) 로그인 버튼 여러번 했을 경우 로그인 요청이 여러개 나타나는 것을 막을 수 있다.
 // takeEvery -> while(true)
 //  ex) 여러번 클릭이 유효한 거면 사용, 숫자 카운트 등등
+// delay -> delay(1000)
 // function* watchHello() {
 //     yield takeEvery(HELLO_SAGA, function*(){
 //         console.log(1);
@@ -3061,6 +3079,16 @@ __webpack_require__.r(__webpack_exports__);
 //         console.log(1);
 //         console.log(2);
 //     }
+// }
+// function* watchHello() {
+//     console.log('before saga');
+//     // while(true)  제너레이터에서만 사용가능한 문법
+//     // 클릭이벤트를 횟수 제한도 가능, 반복 (for문) 사가에서 동작하지 않아도 리듀서는 동작 -> 별개
+//     while(true){
+//         yield take(HELLO_SAGA);
+//         console.log('hello saga');
+//     }
+//     // 비동기 요청, 타이머 넣어도 되고
 // }
 
 function loginAPI() {// 서버에 요청을 보내는 부분
@@ -3079,35 +3107,17 @@ function* login() {
       type: _reducers_user__WEBPACK_IMPORTED_MODULE_1__["LOG_IN_FAILURE"]
     });
   }
-} // function* watchHello() {
-//     console.log('before saga');
-//     // while(true)  제너레이터에서만 사용가능한 문법
-//     // 클릭이벤트를 횟수 제한도 가능, 반복 (for문) 사가에서 동작하지 않아도 리듀서는 동작 -> 별개
-//     while(true){
-//         yield take(HELLO_SAGA);
-//         console.log('hello saga');
-//     }
-//     // 비동기 요청, 타이머 넣어도 되고
-// }
-// while문이 없으면 함수가 끝나버린다.
+} // while문이 없으면 함수가 끝나버린다.
 
 
 function* watchLogin() {
-  console.log("saga");
-
-  while (true) {
-    console.log("saga2");
-    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["take"])(_reducers_user__WEBPACK_IMPORTED_MODULE_1__["LOG_IN"]);
-    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
-      type: _reducers_user__WEBPACK_IMPORTED_MODULE_1__["LOG_IN_SUCCESS"]
-    });
-  }
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_reducers_user__WEBPACK_IMPORTED_MODULE_1__["LOG_IN_REQUEST"], login);
 }
 
 function* watchSignUp() {}
 
 function* userSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([watchLogin(), watchSignUp()]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchSignUp)]);
 }
 
 /***/ }),
