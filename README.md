@@ -18,7 +18,9 @@ npm i prop-types
 
 npm i redeux react-redux - react-redux를 설치하는 이유는 redux는 별개 이기때문에 react에 사용하기 위함 이다.
 
-npm i next-redux-wrapper -
+npm i next-redux-wrapper - withRedux 확장성 및 props로 store 컴포넌트를 가져온다
+
+npm i redux-saga -
 
 ## 용어 정리
 
@@ -38,6 +40,7 @@ npm i next-redux-wrapper -
     - Dispatch -> Action을 실행
     - Reducer -> Action의 결과로 state를 어떻게 바꿀지 정의
 
+- 제너레이터 - 무한의 개념과 비동기 많이 사용
 
 ## 페이지 정리
 

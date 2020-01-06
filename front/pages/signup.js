@@ -1,5 +1,7 @@
 import React, {useState, useCallback} from 'react';
 import { Form,Input, Checkbox, Button } from 'antd';
+import { useDispatch } from 'react-redux';
+import { signUpAction } from '../reducers/user';
 
 // 커스텀 훅
 // export -> 모듈처럼 사용하면 다른곳에서도 사용가능
@@ -31,6 +33,7 @@ const Signup = () => {
     // const onChangePassword = (e) => {
     //     setPassword(e.target.value);
     // };
+    const dispatch = useDispatch();
 
     const onSubmit = useCallback((e) => {
         e.preventDefault();
@@ -40,6 +43,12 @@ const Signup = () => {
         if (!term){
             return setTermError(true);
         }
+        // 리덕스로 전달 -> 서버로 보내 실제 가입 할 수 있다.
+        dispatch(signUpAction({
+            id,
+            password,
+            nick
+        }))
     },[password,passwordCheck,term]);
     
 
