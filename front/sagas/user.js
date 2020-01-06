@@ -1,9 +1,31 @@
-import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
+import { all, fork, takeLatest, takeEvery, call, put, take } from 'redux-saga/effects';
 import { LOG_IN, LOG_IN_SUCCESS, LOG_IN_FAILURE } from '../reducers/user';
 
+// all -> 여러 이펙트를 동시에 실행할 수 있게 합니다.
 // call -> 함수 동기적 호출
 // fork -> 함수 비동기적 호출
 // put ->  Action dispatch 동일
+// take => 해당 액션이 dispatch되면 제너레이터를 next하는 이펙트
+// takeLatest -> 이전 요청이 끝나지 않은게 있다면 이전 요청을 취소 액션을 여러번 요청하는 경우 마지막 액션을 실행
+//  ex) 로그인 버튼 여러번 했을 경우 로그인 요청이 여러개 나타나는 것을 막을 수 있다.
+// takeEvery -> while(true)
+//  ex) 여러번 클릭이 유효한 거면 사용, 숫자 카운트 등등
+
+// function* watchHello() {
+//     yield takeEvery(HELLO_SAGA, function*(){
+//         console.log(1);
+//         console.log(2);
+//     })
+// }
+
+// function* watchHello() {
+//     while(true){
+//     yield take(HELLO_SAGA);
+//         console.log(1);
+//         console.log(2);
+//     }
+// }
+
 
 function loginAPI() {
  // 서버에 요청을 보내는 부분
@@ -24,13 +46,38 @@ function* login() {
     }
 }
 
-// takeLatest -> LOG_IN 액션이 dispatch되길 기다려서 dispatch될 때 login 제너레이터를 호출
-function* wathchLogin() {
-    yield takeLatest(LOG_IN,login)
+// function* watchHello() {
+//     console.log('before saga');
+
+//     // while(true)  제너레이터에서만 사용가능한 문법
+//     // 클릭이벤트를 횟수 제한도 가능, 반복 (for문) 사가에서 동작하지 않아도 리듀서는 동작 -> 별개
+//     while(true){
+//         yield take(HELLO_SAGA);
+//         console.log('hello saga');
+//     }
+//     // 비동기 요청, 타이머 넣어도 되고
+// }
+
+// while문이 없으면 함수가 끝나버린다.
+function* watchLogin() {
+    console.log("saga");
+    while(true){
+        console.log("saga2");
+        yield take(LOG_IN);
+        yield put ({
+            type: LOG_IN_SUCCESS,
+        });
+    }
+}
+
+function* watchSignUp(){
+
 }
 
 export default function* userSaga() {
-    yield all ([
-        fork(wathchLogin),
+    yield all([
+        watchLogin(),
+        watchSignUp(),
     ]);
+
 }

@@ -7,7 +7,7 @@ export const initialState ={
         },
         content: '첫 번째 게시글'
     }],
-    imagePath: [],
+    imagePaths: [],
 };
 
 export const ADD_POST = 'ADD_POST';

@@ -25,6 +25,7 @@ export const loginAction = {
     data: {
         nickname: '이창현'
     },
+    
 };
 
 export const logoutAction = {

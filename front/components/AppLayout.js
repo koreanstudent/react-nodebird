@@ -33,7 +33,7 @@ const AppLayout = ({children}) => {
                 </Col>
                 <Col xs={24} md={12}>{children}</Col>
                 <Col xs={24} md={6}>
-                    <Link href ="https://github.com/koreanstudent"><a target="_blank">Made by chang</a></Link>
+                    {/* <Link href ="https://github.com/koreanstudent"><a target="_blank">Made by chang</a></Link> */}
                 </Col>
             </Row>
             
