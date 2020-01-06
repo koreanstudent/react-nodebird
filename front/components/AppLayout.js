@@ -3,20 +3,18 @@ import { Menu,Input, Row, Col } from 'antd';
 import Link from 'next/Link';
 import LoginForm from './LoginForm';
 import UserProfile from '../components/UserProfile';
+import { useSelector } from 'react-redux';
 
 // xs : 모바일 , sm : 작은 화면, md : 중간 화면, lg : 큰 화면
 
 // gutter : col간의 간격
 
-const dummy = {
-    nickname: '이창현',
-    Post: [],
-    Followers: [],
-    Followings: [],
-    isLoggedIn: false,
-};
+
 
 const AppLayout = ({children}) => {
+    // 로그인 여부 체크
+    const { isLoggedIn} = useSelector(state => state.user);
+
     return ( 
         <div>
             <Menu mode="horizontal">
@@ -28,7 +26,7 @@ const AppLayout = ({children}) => {
             </Menu>
             <Row gutter={10}>
                 <Col xs={24} md={6} >
-                    {dummy.isLoggedIn ? <UserProfile/>
+                    {isLoggedIn ? <UserProfile/>
                     :
                     <LoginForm/>
                     }

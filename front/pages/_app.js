@@ -5,7 +5,7 @@ import AppLayout from '../components/AppLayout';
 import reducer from '../reducers';
 import withRedux from'next-redux-wrapper';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 
 
 // 레이아웃
@@ -33,8 +33,16 @@ NodeBird.propTypes = {
     store: PropTypes.object,
 };
 
+// 미들웨어는 액션과 스토어 사이에서 동작합니다.
+// compose -> 미들웨어 여러개 합성하는것
+// applyMiddleware -> 미들웨어 적용해주는것
 export default withRedux((initialState, options)=> {
-    const store =createStore(reducer, initialState);
     // 여기에다가 store 커스터마이징
+    const middlewares = [];
+    const enhancer = compose(applyMiddleware(...middlewares), 
+    !options.isServer && window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined'?
+    window.__REDUX_DEVTOOLS_EXTENSION__(): (f) => f,
+    );
+    const store =createStore(reducer, initialState, enhancer);
     return store;
   })(NodeBird);

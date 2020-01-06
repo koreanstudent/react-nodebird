@@ -26,6 +26,11 @@ npm i next-redux-wrapper -
                 첫 번째 파라미터로 콜백 함수를 받고 두번째 파라미터로 배열을 받아 memoize 된 콜백 함수를 반환 해주는 Hook이다.
                 두 번째 파 라미터로 받은 배열의 원소 값 중 하나가 변경되어야만 함수의 reference가 변경된다.
 
+- useEffect : 리액트 컴포넌트가 렌더링 될 때마다 특정 작업을 수행하도록 설정 할 수 있는 Hook입니다. 클래스형 컴포넌트의 componentDidMount와 componentDidUpdate를 합친 형태
+     - [] : 가장 처음 렌더링 될 때만 실행되고 업데이트 경우에는 실행 할 필요가 없는 경우에 두번째 파라미터로 비어있는 배열을 넣는다.
+
+- useSelector : 리덕스 스토어의 상태에 접근 할 수 있다. 
+
 - prop-types : 부모로부터 받은 데이터를 제대로 받았는지 검증 할 수 있다.
 
 - Redux (state) -> 안정성, state 통제 용이

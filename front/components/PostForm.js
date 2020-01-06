@@ -1,20 +1,10 @@
 import React from 'react';
 import { Form, Button, Input} from 'antd';
+import { useSelector } from 'react-redux';
 
-const dummy = {
-    isLoggedIn: true,
-    imagePaths: [],
-    mainPosts: [{
-        User: {
-            id:1,
-            nickname: '이창현',
-            
-        },
-        content: '첫 번째 게시글'
-    }]
-};
 
 const PostForm = () => {
+    const {imagePaths} = useSelector(state => state.post);
     return (
         <Form style={{margin: '10px 0 20px'}} encType="multipart/form-data">
                 <Input.TextArea maxLength={140} placeholder="어떤 신기한 일이 있었나요?"/>
@@ -24,7 +14,7 @@ const PostForm = () => {
                     <Button type="primary" style={{ float: 'right' }} htmlType="submit">트위터</Button>
                 </div>
                 <div>
-                    {dummy.imagePaths.map((v, i) => {
+                    {imagePaths.map((v) => {
                         return(
                             <div key ={v} style={{display: 'inline-block'}}>
                                 <img src={'http://localhost:3065'+v} style={{width:'200px'}} alt= {v} />
