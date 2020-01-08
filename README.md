@@ -26,6 +26,8 @@ npm i -D eslint-config-airbnb , npm install eslint-plugin-jsx-a11y --save-dev (�
 
 npm i -D babel-eslint -바벨 최신 문법 사용  "parser": "babel-eslint", "es6": true
 
+npm i axios - 서버에 요청을 보내주는 모듈
+
 ## 용어 정리
 
 - useCallback : 랜더링을 최적화 하기 위해 사용한다.

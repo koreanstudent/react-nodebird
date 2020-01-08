@@ -1,6 +1,6 @@
 import { all, fork, takeLatest, takeEvery, call, put, take, delay } from 'redux-saga/effects';
-import { LOG_IN, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_IN_REQUEST } from '../reducers/user';
-
+import { LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_IN_REQUEST, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE } from '../reducers/user';
+import axios from 'axios';
 // all -> 여러 이펙트를 동시에 실행할 수 있게 합니다.
 // call -> 함수 동기적 호출
 // ex) 서버에 요청을하면 응답이 될때까지 기다렸다가 다음으로 넘어감, 서버요청할때 많이 사용?
@@ -44,32 +44,53 @@ import { LOG_IN, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_IN_REQUEST } from '../reduc
 //     // 비동기 요청, 타이머 넣어도 되고
 // }
 
-function loginAPI() {
-    // 서버에 요청을 보내는 부분
-   }
-   
-   
-   function* login() {
-       try{
-           yield call(loginAPI);
-           yield put ({ 
-               type: LOG_IN_SUCCESS,
-           })
-       } catch (e) { // loginAPI 실패
-           console.error(e);
-           yield put ({
-               type: LOG_IN_FAILURE,
-           })
-       }
-   }
-
 // while문이 없으면 함수가 끝나버린다.
 function* watchLogin() {
     yield takeEvery(LOG_IN_REQUEST,login);
 }
 
-function* watchSignUp(){
+function loginAPI() {
+    // 서버에 요청을 보내는 부분
+    return axios.post('/login');
+}
+   
+   
+function* login() {
+    try{
+        // yield call(loginAPI);
+        yield delay(2000);
+        yield put ({ 
+            type: LOG_IN_SUCCESS,
+        })
+    } catch (e) { // loginAPI 실패
+        console.error(e);
+        yield put ({
+            type: LOG_IN_FAILURE,
+        })
+    }
+}
 
+function* watchSignUp(){
+    yield takeEvery(SIGN_UP_REQUEST,signUp);
+}
+
+function signUpAPI() {
+    // 서버에 요청을 보내는 부분
+}
+   
+   
+function* signUp() {
+    try{
+        yield call(signUpAPI);
+        yield put ({ 
+            type: SIGN_UP_SUCCESS,
+        })
+    } catch (e) { // loginAPI 실패
+        console.error(e);
+        yield put ({
+            type: SIGN_UP_FAILURE,
+        })
+    }
 }
 
 export default function* userSaga() {

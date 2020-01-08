@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginAction, logoutAction } from '../reducers/user';
 // 메인화면
 
-
-
 // dispatch => Action을 디스패치 하는함수
 //  setState -> useDispatch 
 //  useState -> useSelector

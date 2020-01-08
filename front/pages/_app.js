@@ -10,6 +10,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas';
 
 
+
 // 레이아웃
 // store는 state, action, reducer가 합쳐진 것
 // withRedux()(NodeBird); -> 기존 컴퍼넌트를 확장시키는 것
