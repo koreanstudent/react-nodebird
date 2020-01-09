@@ -4,6 +4,7 @@ const dummyUser = {
     Post: [],
     Followers: [],
     Followings: [],
+    id:1
 };
 
 // store  중앙통제실..

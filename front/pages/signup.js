@@ -1,7 +1,8 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import { Form,Input, Checkbox, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {  SIGN_UP_REQUEST } from '../reducers/user';
+import { Router } from 'next/router';
 
 // 커스텀 훅
 // export -> 모듈처럼 사용하면 다른곳에서도 사용가능
@@ -33,9 +34,15 @@ const Signup = () => {
     // const onChangePassword = (e) => {
     //     setPassword(e.target.value);
     // };
-    const { isSigningUp } = useSelector(state => state.user);
+    const { isSigningUp, me } = useSelector(state => state.user);
     const dispatch = useDispatch();
 
+    useEffect( () => {
+        if(me){
+            alert('로그인 했으니 메인페이지로 이동합니다.');
+            Router.push('/');
+        }
+    }, [me && me.id])
     const onSubmit = useCallback((e) => {
         e.preventDefault();
         if (password !== passwordCheck){
