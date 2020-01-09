@@ -1,6 +1,6 @@
 ## react nodebird 
 
-## 개발환경
+## 개발환경 -front
 
 front -> npm 설치
 
@@ -54,3 +54,33 @@ npm i axios - 서버에 요청을 보내주는 모듈
             next.js 내장되어있어 만들면 덮어씌운다 (_error.js, _document.js)=> app.js는 props로 Component라고 받는다. 
 
 
+
+## 개발환경 -back
+
+- npm i express
+
+- npm i axios  - http 요청보낼때 사용
+
+- npm i bcrypt - 비밀번호 암호화 사용
+
+- npm i cookie-parser - 로그인할때 세션이랑 쿠키 사용
+
+- npm i express-session - 로그인 할때 정보저장을 위한 세션
+
+- npm i dotenv - 환경변수 (비밀번호들을 관리)
+
+- npm i cors - 서버, 프론트 둘의 주소 제약을 풀어줌
+
+- npm i helmet hpp - 노드와 익스프레스의 보안을 담당
+
+- npm i morgan - 서버에 로그 남겨주는 것
+
+- npm i multer - 이미지 업로드
+
+- npm i passport passport-local - 로그인, 회원가입 쉽게 처리 도와주는 패키지
+
+- npm i sequelize sequelize-cli - ORM -> SQL문이랑 자바스크립트랑 연결해주는 것
+
+- npm i -D eslint eslint-config-airbnb , npm install eslint-plugin-jsx-a11y --save-dev
+
+- npm i -D nodemon -서버 새로고침
