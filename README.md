@@ -81,6 +81,12 @@ npm i axios - 서버에 요청을 보내주는 모듈
 
 - npm i sequelize sequelize-cli - ORM -> SQL문이랑 자바스크립트랑 연결해주는 것
 
+- npm i -g sequelize-cli
+
 - npm i -D eslint eslint-config-airbnb , npm install eslint-plugin-jsx-a11y --save-dev
 
 - npm i -D nodemon -서버 새로고침
+
+- sequelize init - 디비 구성을 위한 파일들을 만들어 준다.
+
+- npm i mysql2 - mysql을 사용가능하다.
