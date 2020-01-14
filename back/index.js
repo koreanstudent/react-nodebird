@@ -7,7 +7,7 @@ const dotenv =require('dotenv');
 const passport =require('passport');
 
 
-
+const passportConfig = require('./passport');
 const db = require( './models');
 const userAPIRouter = require('./routes/user');
 const postAPIRouter = require('./routes/post');
@@ -16,7 +16,7 @@ const postsAPIRouter = require('./routes/posts');
 dotenv.config();
 const app = express();
 db.sequelize.sync(); // 알아서 테이블 생성해줌
-
+passportConfig();
 app.use(morgan('dev'));
 
 // 요청이 들어 왔을때 req.body에 넣어주는 기능

@@ -49,16 +49,15 @@ function* watchLogin() {
     yield takeEvery(LOG_IN_REQUEST,login);
 }
 
-function loginAPI() {
+function loginAPI(loginData) {
     // 서버에 요청을 보내는 부분
-    return axios.post('/login');
+    return axios.post('/login', loginData);
 }
    
    
-function* login() {
+function* login(action) {
     try{
-        // yield call(loginAPI);
-        yield delay(2000);
+        yield call(loginAPI, action.data);
         yield put ({ 
             type: LOG_IN_SUCCESS,
         })

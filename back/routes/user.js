@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db =require('../models');
+const passport = require('passport');
 
 
 // API는 다른 서비스가 내 서비스의 기능을 실행할 수 있게 열어둔 창구
@@ -41,8 +42,24 @@ router.post('/logout', (req,res) => {
 
 });
 
-router.post('/login', (req,res) => {
-
+router.post('/login', (req, res, next) => { // POST /api/user/login
+    passport.authenticate('local', (err, user, info ) => {  //local.js의 done 인자들 3개 받는다.
+        if (err) {
+            console.error(err);
+            return next(err);
+        }
+        if (info) {
+            return res.status(401).send(info.reason); // local reason => 
+        }
+        return req.login(user, (loginErr) => {
+            if (loginErr) {
+                return next(loginErr);
+            }
+            const filteredUser =Object.assign( {}, user);
+            delete filteredUser.password; // 보안상 비밀번호는 제외하고 프런트로 보낸다.
+            return res.json(user); //프런트로 사용자 정보를 보낸다.
+        })
+    })
 });
 
 router.get('/:id/follow', (req,res) => {
