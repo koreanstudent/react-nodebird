@@ -38,8 +38,10 @@ router.get('/:id', (req,res) => { // 남의 정보 가져오는 것 ex) /api/use
 
 });
 
-router.post('/logout', (req,res) => {
-
+router.post('/logout', (req,res) => { //api/user/logout
+    req.logout();
+    req.session.destroy();
+    res.send('logout 성공');
 });
 
 router.post('/login', (req, res, next) => { // POST /api/user/login
@@ -51,15 +53,15 @@ router.post('/login', (req, res, next) => { // POST /api/user/login
         if (info) {
             return res.status(401).send(info.reason); // local reason => 
         }
-        return req.login(user, (loginErr) => {
+        return req.login(user, (loginErr) => { // passport.js serializeUser 실행됨
             if (loginErr) {
                 return next(loginErr);
             }
-            const filteredUser =Object.assign( {}, user);
+            const filteredUser =Object.assign( {}, user.toJSON());  //시퀄라이저 객체 user라서 json형식으로 사용하려면 바꿔야한다.
             delete filteredUser.password; // 보안상 비밀번호는 제외하고 프런트로 보낸다.
-            return res.json(user); //프런트로 사용자 정보를 보낸다.
+            return res.json(filteredUser); //프런트로 사용자 정보를 보낸다.
         })
-    })
+    })(req, res, next);
 });
 
 router.get('/:id/follow', (req,res) => {
