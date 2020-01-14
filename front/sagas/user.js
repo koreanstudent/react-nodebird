@@ -74,14 +74,15 @@ function* watchSignUp(){
     yield takeEvery(SIGN_UP_REQUEST,signUp);
 }
 
-function signUpAPI() {
+function signUpAPI(signUpData) {
     // 서버에 요청을 보내는 부분
+    return axios.post('http://localhost:8080/api/user/', signUpData);
 }
    
    
-function* signUp() {
+function* signUp(action) {
     try{
-        yield call(signUpAPI);
+        yield call(signUpAPI, action.data);
         yield put ({ 
             type: SIGN_UP_SUCCESS,
         })
