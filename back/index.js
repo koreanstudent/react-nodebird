@@ -4,6 +4,7 @@ const cors =require('cors');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv =require('dotenv');
+const passport =require('passport');
 
 
 
@@ -32,6 +33,9 @@ app.use(expressSession({
         secure: false, // https를 쓸 때 true
     }
 }))
+app.use(passport.initialize());
+app.use(passport.session()); // expressSession 실행 후에 사용
+
 
 app.use('/api/user', userAPIRouter); 
 app.use('/api/post', postAPIRouter); 
