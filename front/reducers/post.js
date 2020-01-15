@@ -88,7 +88,7 @@ export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
 
 // 불변성을 유지하기위해 스트레드 문법 사용
-const reducer = (state =initialState, action) => {
+export default (state =initialState, action) => {
     switch (action.type){
         case ADD_POST_REQUEST: {
             return {
@@ -148,5 +148,3 @@ const reducer = (state =initialState, action) => {
         }
     }
 }
-
-export default reducer;

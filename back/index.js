@@ -22,7 +22,10 @@ app.use(morgan('dev'));
 // 요청이 들어 왔을때 req.body에 넣어주는 기능
 app.use(express.json());
 app.use(express.urlencoded({ extended: true})); //req.body 작동
-app.use(cors()); //다른 포트번호 서버 연결가능하기 해줌 front,back
+app.use(cors({
+    origin: true,
+    credentials: true
+})); //다른 포트번호 서버 연결가능하기 해줌 front,back , 쿠키가 서로 교환이됨
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(expressSession({
     resave: true, // 매번 새션 강제 저장
@@ -31,7 +34,8 @@ app.use(expressSession({
     cookie: {
         httpOnly: true, // 자바스크립트로 쿠키에 접근 못함
         secure: false, // https를 쓸 때 true
-    }
+    },
+    name: 'reactnode', // connent.id 쿠키 아이디 변경 보안을위해 변경해야함
 }))
 app.use(passport.initialize());
 app.use(passport.session()); // expressSession 실행 후에 사용

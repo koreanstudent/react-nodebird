@@ -75,7 +75,7 @@ export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 //     }
 // }
 
-const reducer = (state= intialState, action) => {
+export default  (state= intialState, action) => {
     switch (action.type){
         case LOG_IN_REQUEST: {  //로그인 성공시
             return {
@@ -140,4 +140,3 @@ const reducer = (state= intialState, action) => {
 
 }
 
-export default reducer;

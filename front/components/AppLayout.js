@@ -1,5 +1,6 @@
 import React from 'react';
 import { Menu,Input, Row, Col } from 'antd';
+import PropTypes from 'prop-types';
 import Link from 'next/Link';
 import LoginForm from './LoginForm';
 import UserProfile from '../components/UserProfile';
@@ -24,7 +25,7 @@ const AppLayout = ({children}) => {
                     <Input.Search enterButton style={{ verticalAlign:'middle'}}/>
                 </Menu.Item>
             </Menu>
-            <Row gutter={10}>
+            <Row gutter={8}>
                 <Col xs={24} md={6} >
                     {isLoggedIn ? <UserProfile/>
                     :
@@ -40,5 +41,9 @@ const AppLayout = ({children}) => {
         </div>
     );
 };
+
+AppLayout.propTypes = {
+    children: PropTypes.node,
+  };
 
 export default AppLayout;

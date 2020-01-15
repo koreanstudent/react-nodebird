@@ -44,7 +44,7 @@ import axios from 'axios';
 //     // 비동기 요청, 타이머 넣어도 되고
 // }
 
-axios.defaults.baseURL = 'http://localhost:8080/api';
+
 
 // while문이 없으면 함수가 끝나버린다.
 function* watchLogin() {
@@ -53,7 +53,9 @@ function* watchLogin() {
 
 function loginAPI(loginData) {
     // 서버에 요청을 보내는 부분
-    return axios.post('/user/login', loginData);
+    return axios.post('/user/login', loginData, {
+        withCredentials: true, // 쿠키를 주고 받을 수 있다.
+    });
 }
    
    
@@ -78,7 +80,7 @@ function* watchSignUp(){
 
 function signUpAPI(signUpData) {
     // 서버에 요청을 보내는 부분
-    return axios.post('/user', signUpData);
+    return axios.post('/user/', signUpData);
 }
    
    
@@ -88,7 +90,7 @@ function* signUp(action) {
         yield put ({ 
             type: SIGN_UP_SUCCESS,
         })
-    } catch (e) { // loginAPI 실패
+    } catch (e) { // signUpAPI 실패
         console.error(e);
         yield put ({
             type: SIGN_UP_FAILURE,

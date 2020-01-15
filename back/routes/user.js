@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db =require('../models');
 const passport = require('passport');
+const bcrypt = require('bcrypt');
 
 
 // API는 다른 서비스가 내 서비스의 기능을 실행할 수 있게 열어둔 창구
@@ -13,7 +14,7 @@ router.post('/', async (req,res, next) => { // POST /api/user 회원가입
     try {
         const exUser = await db.User.findOne({
             where: {
-                userId : req.body.id,
+                userId : req.body.userId,
             },
         });
         if (exUser) {

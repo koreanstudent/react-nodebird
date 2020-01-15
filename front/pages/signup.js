@@ -2,7 +2,7 @@ import React, {useState, useCallback, useEffect} from 'react';
 import { Form,Input, Checkbox, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {  SIGN_UP_REQUEST } from '../reducers/user';
-import { Router } from 'next/router';
+import Router from 'next/router';
 
 // 커스텀 훅
 // export -> 모듈처럼 사용하면 다른곳에서도 사용가능
@@ -42,7 +42,8 @@ const Signup = () => {
             alert('로그인 했으니 메인페이지로 이동합니다.');
             Router.push('/');
         }
-    }, [me && me.id])
+    }, [me && me.id]);
+
     const onSubmit = useCallback((e) => {
         e.preventDefault();
         if (password !== passwordCheck){
@@ -52,14 +53,15 @@ const Signup = () => {
             return setTermError(true);
         }
         // 리덕스로 전달 -> 서버로 보내 실제 가입 할 수 있다.
-        dispatch({
+        console.log("in");
+        return dispatch({
             type: SIGN_UP_REQUEST,
             data: {
                 userId: id,
                 password,
-                nickname: nick
-            }
-        })
+                nickname: nick,
+            },
+        });
     },[id, nick, password,passwordCheck,term]);
     
 
@@ -99,11 +101,11 @@ const Signup = () => {
                     {passwordError && <div style ={{color: 'red'}}> 비밀번호가 일치하지 않습니다. </div>}
                 </div>
                 <div>
-                    <Checkbox name="user-term" value={term}  onChange={onChangeTerm}>동의합니다</Checkbox>
+                    <Checkbox name="user-term" checked={term}  onChange={onChangeTerm}>동의합니다</Checkbox>
                     {termError && <div style ={{color: 'red'}}> 약관에 동의 하셔야합니다. </div>}
                 </div>
                 <div style={{marginTop: 10}}>
-                    <Button type="primary" htmlType="submit" loadng={isSigningUp}>가입하기</Button>
+                    <Button type="primary" htmlType="submit" loading={isSigningUp}>가입하기</Button>
                 </div>
             </Form>
         </>
