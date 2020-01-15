@@ -54,13 +54,36 @@ router.post('/login', (req, res, next) => { // POST /api/user/login
         if (info) {
             return res.status(401).send(info.reason); // local reason => 
         }
-        return req.login(user, (loginErr) => { // passport.js serializeUser 실행됨
-            if (loginErr) {
-                return next(loginErr);
+        return req.login(user, async (loginErr) => { // passport.js serializeUser 실행됨
+            try {
+                if (loginErr) {
+                    return next(loginErr);
+                }
+                const fullUser = await db.User.findOne({ // 로그인 후 로그인한 사용자정보를 보내주려고한다. post 개수 팔로잉 팔로워 수 include 사용함
+                    where: { id: user.id },
+                    include: [{
+                        model: db.Post,
+                        as: 'Posts',
+                        attributes: ['id'], // 필터링을 할 수 있다. 
+                    }, {
+                        model: db.User,
+                        as: 'Followings',
+                        attributes: ['id'],
+                    }, {
+                        model: db.User,
+                        as: 'Followers',
+                        attributes: ['id'],
+                    }],
+                    attributes: ['id', 'nickname', 'userId'], //비밀번호를 제외하고 프런트로 보낸다
+                });
+                console.log(fullUser);
+                return res.json(fullUser);
+            } catch (e) {
+              next(e);
             }
-            const filteredUser =Object.assign( {}, user.toJSON());  //시퀄라이저 객체 user라서 json형식으로 사용하려면 바꿔야한다.
-            delete filteredUser.password; // 보안상 비밀번호는 제외하고 프런트로 보낸다.
-            return res.json(filteredUser); //프런트로 사용자 정보를 보낸다.
+            // const filteredUser =Object.assign( {}, user.toJSON());  //시퀄라이저 객체 user라서 json형식으로 사용하려면 바꿔야한다.
+            // delete filteredUser.password; // 보안상 비밀번호는 제외하고 프런트로 보낸다.
+            // return res.json(filteredUser); //프런트로 사용자 정보를 보낸다.
         })
     })(req, res, next);
 });

@@ -449,11 +449,48 @@ const UserProfile = () => {
       type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOG_OUT_REQUEST"]
     });
   }, []);
-  return __jsx(antd__WEBPACK_IMPORTED_MODULE_0__["Card"], {
-    actions: [// <div key="twit">트위터 <br/>{me.Post.length}</div>,
-      // <div key="following">팔로잉 <br/>{me.Followings.length}</div>,
-      // <div key="follower">팔로워 <br/>{me.Followers.length}</div>,
-    ],
+  return __jsx(antd__WEBPACK_IMPORTED_MODULE_0__["Card"] // back/router/user.js -> login/post 에서 include 팔로윙 팔로워 데이터 가져온다
+  , {
+    actions: [__jsx("div", {
+      key: "twit",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 20
+      },
+      __self: undefined
+    }, "\uD2B8\uC704\uD130 ", __jsx("br", {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 20
+      },
+      __self: undefined
+    }), me.Posts.length), __jsx("div", {
+      key: "following",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 21
+      },
+      __self: undefined
+    }, "\uD314\uB85C\uC789 ", __jsx("br", {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 21
+      },
+      __self: undefined
+    }), me.Followings.length), __jsx("div", {
+      key: "follower",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 22
+      },
+      __self: undefined
+    }, "\uD314\uB85C\uC6CC ", __jsx("br", {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 22
+      },
+      __self: undefined
+    }), me.Followers.length)],
     __source: {
       fileName: _jsxFileName,
       lineNumber: 17
@@ -463,21 +500,21 @@ const UserProfile = () => {
     avatar: __jsx(antd__WEBPACK_IMPORTED_MODULE_0__["Avatar"], {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 24
+        lineNumber: 25
       },
       __self: undefined
     }, me.nickname[0]),
     title: me.nickname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 23
+      lineNumber: 24
     },
     __self: undefined
   }), __jsx(antd__WEBPACK_IMPORTED_MODULE_0__["Button"], {
     onClick: onLogout,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 27
+      lineNumber: 28
     },
     __self: undefined
   }, "\uB85C\uADF8\uC544\uC6C3"));
