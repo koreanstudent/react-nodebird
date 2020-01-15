@@ -7,7 +7,13 @@ const bcrypt = require('bcrypt');
 
 // API는 다른 서비스가 내 서비스의 기능을 실행할 수 있게 열어둔 창구
 router.get('/', (req,res) => { // /api/user
-
+    if (!req.user) { // 로그인 후 새로고침 시 쿠키에 데이터 확인 
+        return res.status(401).send('로그인이 필요합니다.');
+    }
+    const user =Object.assign( {}, req.user.toJSON());
+    delete user.password;
+    
+    return res.json(req.user);
 });
 
 router.post('/', async (req,res, next) => { // POST /api/user 회원가입
