@@ -41,7 +41,7 @@ router.post('/', async (req,res, next) => { // POST /api/user 회원가입
     }
 });
 
-router.get('/:id', (req,res) => { // 남의 정보 가져오는 것 ex) /api/user/3 req.params.id로 가져올 수 있다.
+router.get('/:id', (req,res) => { // 남의 정보 가져오는 것 ex) /api/user/3 req.params.id로 가져올 수 있다. 동적을 변할수 있다.
 
 });
 

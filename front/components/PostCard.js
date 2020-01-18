@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect  } from 'react';
 import { Card, Icon, Button, Avatar, Input, Form,List,Comment} from 'antd';
+import Link  from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
