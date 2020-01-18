@@ -16,7 +16,7 @@ import rootSaga from '../sagas';
 // withRedux()(NodeBird); -> 기존 컴퍼넌트를 확장시키는 것
 // withRedux -> props로 store 컴포넌트를 가져온다 next.js
 
-const NodeBird = ({ Component, store }) => {
+const NodeBird = ({ Component, store, pageProps }) => {
     return (
         <Provider store={store}>
             <Head>
@@ -24,7 +24,7 @@ const NodeBird = ({ Component, store }) => {
             <link rel ="stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"/>
             </Head>
             <AppLayout>
-                <Component/>
+                <Component {...pageProps}/>
             </AppLayout>
         </Provider>
     )
@@ -34,7 +34,19 @@ const NodeBird = ({ Component, store }) => {
 NodeBird.propTypes = {
     Component: PropTypes.elementType.isRequired,
     store: PropTypes.object.isRequired,
+    pageProps: PropTypes.object.isRequired,
 };
+// context next에서 넣어줌 콘솔로 확인해보면 가능 
+// 실행순서 : NodeBird.getInitialProps  -> Component.getInitialProps(ctx) ex) Hashtag.getInitialProps -> pageProps -> NodeBird.props 받고 -> Component {...pageProps}/> -> 각 컴포넌트 props받는다.
+NodeBird.getInitialProps = async (context) => {
+    console.log(context);
+    const { ctx, Component } = context;
+    let pageProps = {};
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+    return { pageProps };
+  };
 
 // 미들웨어는 액션과 스토어 사이에서 동작합니다.
 // compose -> 미들웨어 여러개 합성하는것
