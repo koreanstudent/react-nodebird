@@ -19,16 +19,17 @@ db.sequelize.sync(); // 알아서 테이블 생성해줌
 passportConfig();
 app.use(morgan('dev'));
 
-// 요청이 들어 왔을때 req.body에 넣어주는 기능
-app.use(express.json());
-app.use(express.urlencoded({ extended: true})); //req.body 작동
 app.use(cors({
     origin: true,
     credentials: true
 })); //다른 포트번호 서버 연결가능하기 해줌 front,back , 쿠키가 서로 교환이됨
+
+// 요청이 들어 왔을때 req.body에 넣어주는 기능
+app.use(express.json());
+app.use(express.urlencoded({ extended: true})); //req.body 작동
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(expressSession({
-    resave: true, // 매번 새션 강제 저장
+    resave: false, // 매번 새션 강제 저장
     saveUninitialized: false, // 빈 값도 저장
     secret: process.env.COOKIE_SECRET,
     cookie: {
@@ -47,6 +48,6 @@ app.use('/api/posts', postsAPIRouter);
 
 
 
-app.listen(8080, () => {
-    console.log('server is running on localhost: 8080');
+app.listen(3065, () => {
+    console.log('server is running on localhost: 3065');
 });

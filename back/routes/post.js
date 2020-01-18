@@ -12,7 +12,7 @@ router.post('/', async (req, res, next) => {  // api/post
             UserId: req.user.id,
         });
         if (hashtags) {
-            await Promise.all(hashtags.map(tag => db.Hashtag.findOrCreate({ //반복문
+            const result = await Promise.all(hashtags.map(tag => db.Hashtag.findOrCreate({ //반복문
                 where: { name: tag.slice(1).toLowerCase()}, // slice(1) -> #빼는 것 , 영어는 소문자
             })));
             console.log(result);

@@ -7,6 +7,7 @@ export const initialState ={
             
         },
         content: '첫 번째 게시글',
+        img: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
         Comments: [],
     }],  //화면에 보일 포스트들
     imagePaths: [], // 미리보기 이미지 경로
@@ -28,6 +29,7 @@ const dummyPost = {
     content: '더미입니다.',
     Comments: [],
 }
+
 
 const dummyComment = {
     id:1,
@@ -141,6 +143,23 @@ export default (state =initialState, action) => {
               addCommentErrorReason: action.error,
             };
           }
+          case LOAD_MAIN_POSTS_REQUEST: {
+            return {
+                ...state,
+                mainPosts: [],
+            }
+        }
+        case LOAD_MAIN_POSTS_SUCCESS: {
+            return {
+                ...state,
+                mainPosts:action.data,
+            }
+        }
+        case LOAD_MAIN_POSTS_FAILURE: {
+            return {
+                ...state,
+            }
+        }
         default: {
             return{
                 ...state,

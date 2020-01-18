@@ -13,7 +13,7 @@ router.get('/', (req,res) => { // /api/user
     const user =Object.assign( {}, req.user.toJSON());
     delete user.password;
     
-    return res.json(req.user);
+    return res.json(user);
 });
 
 router.post('/', async (req,res, next) => { // POST /api/user 회원가입

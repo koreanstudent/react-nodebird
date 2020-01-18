@@ -461,46 +461,10 @@ const UserProfile = () => {
   }, []);
   return __jsx(antd__WEBPACK_IMPORTED_MODULE_0__["Card"] // back/router/user.js -> login/post 에서 include 팔로윙 팔로워 데이터 가져온다
   , {
-    actions: [__jsx("div", {
-      key: "twit",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 20
-      },
-      __self: undefined
-    }, "\uD2B8\uC704\uD130 ", __jsx("br", {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 20
-      },
-      __self: undefined
-    }), me.Posts.length), __jsx("div", {
-      key: "following",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 21
-      },
-      __self: undefined
-    }, "\uD314\uB85C\uC789 ", __jsx("br", {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 21
-      },
-      __self: undefined
-    }), me.Followings.length), __jsx("div", {
-      key: "follower",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 22
-      },
-      __self: undefined
-    }, "\uD314\uB85C\uC6CC ", __jsx("br", {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 22
-      },
-      __self: undefined
-    }), me.Followers.length)],
+    actions: [// <div key="twit">트위터 <br/>{me.Posts.length}</div>,
+      // <div key="following">팔로잉 <br/>{me.Followings.length}</div>,
+      // <div key="follower">팔로워 <br/>{me.Followers.length}</div>,
+    ],
     __source: {
       fileName: _jsxFileName,
       lineNumber: 17
@@ -2902,6 +2866,7 @@ const initialState = {
       nickname: '이창현'
     },
     content: '첫 번째 게시글',
+    img: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
     Comments: []
   }],
   //화면에 보일 포스트들
@@ -3029,6 +2994,25 @@ const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE'; // 불변성을 유지하기�
           isAddingComment: false,
           addCommentErrorReason: action.error
         });
+      }
+
+    case LOAD_MAIN_POSTS_REQUEST:
+      {
+        return _objectSpread({}, state, {
+          mainPosts: []
+        });
+      }
+
+    case LOAD_MAIN_POSTS_SUCCESS:
+      {
+        return _objectSpread({}, state, {
+          mainPosts: action.data
+        });
+      }
+
+    case LOAD_MAIN_POSTS_FAILURE:
+      {
+        return _objectSpread({}, state);
       }
 
     default:
@@ -3289,7 +3273,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-axios__WEBPACK_IMPORTED_MODULE_3___default.a.defaults.baseURL = 'http://localhost:8080/api'; // 한번 불러온 모듈은 캐싱이 된다.
+axios__WEBPACK_IMPORTED_MODULE_3___default.a.defaults.baseURL = 'http://localhost:3065/api'; // 한번 불러온 모듈은 캐싱이 된다.
 
 function* rootSaga() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_user__WEBPACK_IMPORTED_MODULE_1__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_post__WEBPACK_IMPORTED_MODULE_2__["default"])]);
@@ -3318,13 +3302,14 @@ __webpack_require__.r(__webpack_exports__);
 
 function addPostAPI(postData) {
   return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/post', postData, {
-    withCredentials: true
+    withCredentials: true // 로그인 한사람만 글쓰게할수잇게 쿠키를 보낸다
+
   });
 }
 
 function* addPost(action) {
   try {
-    const result = yield call(addPostAPI, action.data);
+    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(addPostAPI, action.data);
     yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
       type: _reducers_post__WEBPACK_IMPORTED_MODULE_1__["ADD_POST_SUCCESS"],
       data: result.data
@@ -3339,6 +3324,29 @@ function* addPost(action) {
 
 function* watchAddPost() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_post__WEBPACK_IMPORTED_MODULE_1__["ADD_POST_REQUEST"], addPost);
+}
+
+function loadMainPostsAPI() {
+  return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/posts', {});
+}
+
+function* loadMainPosts() {
+  try {
+    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(loadMainPostsAPI);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+      type: _reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_MAIN_POSTS_SUCCESS"],
+      data: result.data
+    });
+  } catch (e) {
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+      type: _reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_MAIN_POSTS_FAILURE"],
+      error: e
+    });
+  }
+}
+
+function* watchloadMainPosts() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_MAIN_POSTS_REQUEST"], loadMainPosts);
 }
 
 function addCommentAPI() {}
@@ -3365,7 +3373,7 @@ function* watchAddComment() {
 }
 
 function* postSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddPost), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddComment)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddPost), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchloadMainPosts), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddComment)]);
 }
 
 /***/ }),
