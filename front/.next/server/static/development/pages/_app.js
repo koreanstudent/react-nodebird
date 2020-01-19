@@ -3220,8 +3220,14 @@ const ADD_POST_TO_ME = 'ADD_POST_TO_ME'; // export const loginRequestAction = {
 
     case LOAD_USER_SUCCESS:
       {
+        if (action.me) {
+          return _objectSpread({}, state, {
+            me: action.data
+          });
+        }
+
         return _objectSpread({}, state, {
-          me: action.data
+          userInfo: action.data
         });
       }
 
@@ -3335,6 +3341,52 @@ function* watchloadMainPosts() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_MAIN_POSTS_REQUEST"], loadMainPosts);
 }
 
+function loadHashtagPostsAPI(tag) {
+  return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(`/hashtag/${tag}`);
+}
+
+function* loadHashtagPosts(action) {
+  try {
+    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(loadHashtagPostsAPI, action.data);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+      type: _reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_HASHTAG_POSTS_SUCCESS"],
+      data: result.data
+    });
+  } catch (e) {
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+      type: _reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_HASHTAG_POSTS_FAILURE"],
+      error: e
+    });
+  }
+}
+
+function* watchLoadHashtagPosts() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_HASHTAG_POSTS_REQUEST"], loadHashtagPosts);
+}
+
+function loadUserPostsAPI(id) {
+  return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(`/user/${id}/posts`);
+}
+
+function* loadUserPosts(action) {
+  try {
+    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(loadUserPostsAPI, action.data);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+      type: _reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_USER_POSTS_SUCCESS"],
+      data: result.data
+    });
+  } catch (e) {
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+      type: _reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_USER_POSTS_FAILURE"],
+      error: e
+    });
+  }
+}
+
+function* watchLoadUserPosts() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_USER_POSTS_REQUEST"], loadUserPosts);
+}
+
 function addCommentAPI() {}
 
 function* addComment(action) {
@@ -3359,7 +3411,7 @@ function* watchAddComment() {
 }
 
 function* postSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddPost), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchloadMainPosts), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddComment)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddPost), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchloadMainPosts), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddComment), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadHashtagPosts), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadUserPosts)]);
 }
 
 /***/ }),
@@ -3499,21 +3551,24 @@ function* watchLogOut() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_reducers_user__WEBPACK_IMPORTED_MODULE_1__["LOG_OUT_REQUEST"], logOut);
 }
 
-function loadUserAPI() {
+function loadUserAPI(userId) {
   // 서버에 요청을 보내는 부분
-  return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/user/', {
+  return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(userId ? `/user/${userId}` : '/user/', {
     withCredentials: true
   });
-}
+} // 내정보 뿐만아니라 남의 정보도 불러와야함
 
-function* loadUser() {
+
+function* loadUser(action) {
   try {
     // yield call(loadUserAPI);
-    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(loadUserAPI);
+    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(loadUserAPI, action.data);
     yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
       // put은 dispatch 동일
       type: _reducers_user__WEBPACK_IMPORTED_MODULE_1__["LOAD_USER_SUCCESS"],
-      data: result.data
+      data: result.data,
+      me: !action.data // userId가 없어야 내정보 불러옴 reducers/user 보냄
+
     });
   } catch (e) {
     // loginAPI 실패
