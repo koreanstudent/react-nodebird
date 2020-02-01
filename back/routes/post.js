@@ -35,7 +35,64 @@ router.post('/', async (req, res, next) => {  // api/post
     }
 });
 
-router.post('/images', (req,res) => {
+
+// 댓글 가져오기
+router.get('/:id/comments', async (req, res, next) => {
+  try {
+    const post = await db.Post.findOne({ where: { id: req.params.id } });
+    if (!post) {
+      return res.status(404).send('포스트가 존재하지 않습니다.');
+    }
+    const comments = await db.Comment.findAll({
+      where: {
+        PostId: req.params.id,
+      },
+      order: [['createdAt', 'ASC']],
+      include: [{
+        model: db.User,
+        attributes: ['id', 'nickname'], // id 랑 nickname만 가져온다 비밀번호 제외
+      }],
+    });
+    res.json(comments);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+// 댓글 작성하기
+router.post('/:id/comment', async (req, res, next) => {  // POST /api/post/10000/comment
+  try {
+    if (!req.user) {
+      return res.status(401).send('로그인이 필요합니다.');
+    }
+    const post = await db.Post.findOne({ where: {id: req.params.id}});
+    if(!post) {
+      return res.status(404).send('포스트가 존재하지 않습니다.');
+    }
+    const newComment = await db.Comment.create({
+      PostId: post.id,
+      UserId: req.user.id,
+      content: req.body.conent,
+    });
+
+    // 시퀄라이즈 associate 연결 db저장
+    await post.addComment(newComment.id);
+    // db저장 값을 프론트로 보낸다.
+    const comment = await db.Comment.findOne({
+      where: {
+        id: newComment.id
+      },
+      include: [{
+        model: db.User,
+        attributes: ['id', 'nickname'],
+      }],
+    });
+    return res.json(comment);
+  } catch (e) {
+    console.error(e);
+    next(e)
+  }
 
 });
 

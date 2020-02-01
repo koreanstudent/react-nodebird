@@ -2983,6 +2983,8 @@ const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE'; // 불변성을 유지하기�
       }
 
     case LOAD_MAIN_POSTS_REQUEST:
+    case LOAD_HASHTAG_POSTS_REQUEST:
+    case LOAD_USER_POSTS_REQUEST:
       {
         return _objectSpread({}, state, {
           mainPosts: []
@@ -2990,6 +2992,8 @@ const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE'; // 불변성을 유지하기�
       }
 
     case LOAD_MAIN_POSTS_SUCCESS:
+    case LOAD_HASHTAG_POSTS_SUCCESS:
+    case LOAD_USER_POSTS_SUCCESS:
       {
         return _objectSpread({}, state, {
           mainPosts: action.data
@@ -2997,6 +3001,8 @@ const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE'; // 불변성을 유지하기�
       }
 
     case LOAD_MAIN_POSTS_FAILURE:
+    case LOAD_HASHTAG_POSTS_FAILURE:
+    case LOAD_USER_POSTS_FAILURE:
       {
         return _objectSpread({}, state);
       }
@@ -3387,15 +3393,22 @@ function* watchLoadUserPosts() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_USER_POSTS_REQUEST"], loadUserPosts);
 }
 
-function addCommentAPI() {}
+function addCommentAPI(data) {
+  return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(`/post/${data.postId}/comment`, {
+    content: data.comment
+  }, {
+    withCredentials: true
+  });
+}
 
 function* addComment(action) {
   try {
-    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["delay"])(2000);
+    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(addCommentAPI, action.data);
     yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
       type: _reducers_post__WEBPACK_IMPORTED_MODULE_1__["ADD_COMMENT_SUCCESS"],
       data: {
-        postId: action.data.postId
+        postId: action.data.postId,
+        comment: result.data
       }
     });
   } catch (e) {
@@ -3410,8 +3423,34 @@ function* watchAddComment() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_post__WEBPACK_IMPORTED_MODULE_1__["ADD_COMMENT_REQUEST"], addComment);
 }
 
+function loadCommentAPI(postId) {
+  return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(`/post/${postId}/comments`);
+}
+
+function* loadComments(action) {
+  try {
+    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(loadCommentAPI, action.data);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+      type: _reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_COMMENTS_SUCCESS"],
+      data: {
+        postId: action.data,
+        comment: result.data
+      }
+    });
+  } catch (e) {
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+      type: _reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_COMMENTS_FAILURE"],
+      error: e
+    });
+  }
+}
+
+function* watchLoadComment() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_post__WEBPACK_IMPORTED_MODULE_1__["LOAD_COMMENTS_REQUEST"], loadComments);
+}
+
 function* postSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddPost), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchloadMainPosts), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddComment), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadHashtagPosts), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadUserPosts)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddPost), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchloadMainPosts), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddComment), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadComment), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadHashtagPosts), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadUserPosts)]);
 }
 
 /***/ }),
